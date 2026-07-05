@@ -33,7 +33,3 @@ flowchart TD
 Each step depends on the output of the previous one. For example, stop-word removal must happen *after* tokenization (you can't remove "the" from raw, unsplit text), and case normalization should ideally happen *before* stop-word removal, since stop-word lists are usually lowercase and won't match "The" otherwise.
 ````
 ````
-
-**Important note:** When you paste this, make sure you copy everything including the outer ` ```markdown ` and ` ``` ` at the very start/end are NOT included — only copy what's between them (which itself contains a mermaid code block — that inner one you DO keep, since that's what tells GitHub to draw the diagram).
-
-Once committed, GitHub will automatically render this as an actual flowchart with boxes and arrows when you view the file. Let me know once it's done — then it's just the **Reflection Note** left for your individual part.
