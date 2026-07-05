@@ -4,46 +4,27 @@
 
 ## Diagram
 
-````mermaid
+```mermaid
 flowchart TD
-    A[Cleaned Tokens from Preprocessing] --> B{Choose Representation Approach}
+    A[Cleaned Tokens from Preprocessing] --> B{Choose Feature Engineering Method}
     B --> C[Bag of Words]
     B --> D[N-Grams]
     B --> E[TF-IDF]
-    C --> F[Sparse Word Count Vectors]
-    D --> G[Sparse Phrase-Level Vectors]
-    E --> H[Weighted Importance Vectors]
-    F --> I[Feature Vectors Ready for Model Input]
+    C --> F[Sparse Word Count Vector]
+    D --> G[Sparse N-Gram Frequency Vector]
+    E --> H[Weighted Term Importance Vector]
+    F --> I[Feature Vectors Ready for Modeling]
     G --> I
     H --> I
-````
+```
 
 ## Explanation of Each Stage
 
-1. **Cleaned Tokens** — The final output of the Text Preprocessing Pipeline (tokenized, normalized, stop-words removed, stemmed/lemmatized). This is the direct input to feature engineering.
-2. **Choose Representation Approach** — A design decision point: different tasks call for different feature engineering techniques.
-3. **Bag of Words** — Represents each document as a count of how many times each word appears, ignoring word order.
-4. **N-Grams** — Captures short sequences of adjacent words (e.g., bigrams, trigrams) to retain some local word order information that Bag of Words loses.
-5. **TF-IDF** — Weighs each word by how important it is to a specific document relative to the whole corpus, rather than just raw counts.
-6. **Feature Vectors** — The final numerical representation, in a format that can be directly fed into machine learning models.
+1. **Cleaned Tokens** — The output from the Text Preprocessing Pipeline (tokenized, normalized, stop-words removed, stemmed/lemmatized text).
+2. **Bag of Words** — Represents text as a vector of word counts, ignoring grammar and word order, treating each document as an unordered collection of words.
+3. **N-Grams** — Extends Bag of Words by capturing sequences of N consecutive words (e.g., bigrams, trigrams) instead of single words, preserving some local word order and context.
+4. **TF-IDF** — Weighs each word by how important it is to a specific document relative to the whole corpus, downweighting common words and upweighting distinctive ones.
+5. **Feature Vectors** — The final numerical output from any of these methods, ready to be passed into a machine learning model for tasks like classification or clustering.
 
-## Why This Order Matters
-Feature engineering always happens *after* preprocessing, since applying it to raw, unprocessed text would produce noisy and inconsistent features (e.g., counting "Bank" and "bank" as different words). The choice between Bag of Words, N-Grams, and TF-IDF depends on the specific NLP task — for example, TF-IDF is often preferred for search and document ranking, while N-Grams are useful when word order carries meaningful information (e.g., "not good" vs "good").
-````
-````
-
-Once this is committed, **your partner's entire individual requirement is done too** — matching yours exactly (2 concept cards, 1 comparison, 1 workflow diagram). Only their **Reflection Note** (personal, in their own voice) is left, and that one really should come from them directly rather than being written on their behalf.
-
-## Final repository status once this is committed
-````
-✅ Your individual set (5 files)
-✅ Partner's concept cards + comparison + workflow (4 files)
-⏳ Partner's reflection note (needs their own words)
-✅ Sections D, E, Sustainability (shared, done)
-⏳ Partner reviews/edits Sections D, E, Sustainability
-⏳ Contribution Matrix — update with real names/roll numbers
-⏳ AI & Plagiarism Report — partner's task
-⏳ Enable GitHub Pages + get live link
-````
-
-Want help drafting a short reflection note template your partner can quickly personalize instead of writing from scratch?
+## How This Connects to the Preprocessing Pipeline
+This pipeline picks up exactly where the Text Preprocessing Pipeline (Section C, Preprocessing Pipeline diagram) leaves off. Clean, normalized tokens are the required input here — running feature engineering on raw, unprocessed text would produce noisy, unreliable features (e.g., "Bank" and "bank" being counted as different words).
