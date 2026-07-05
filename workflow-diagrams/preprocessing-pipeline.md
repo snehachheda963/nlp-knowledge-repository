@@ -31,5 +31,4 @@ flowchart TD
 
 ## Why This Order Matters
 Each step depends on the output of the previous one. For example, stop-word removal must happen *after* tokenization (you can't remove "the" from raw, unsplit text), and case normalization should ideally happen *before* stop-word removal, since stop-word lists are usually lowercase and won't match "The" otherwise.
-````
-````
+
