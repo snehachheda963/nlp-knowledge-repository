@@ -1,7 +1,6 @@
 # NLP Knowledge Artifact Repository
-**by Sneha and Mahek**
 
-A structured repository covering Week 1 NLP concepts — text preprocessing, feature engineering, and language representation — built for CCE Activity I (Natural Language Processing, SAKEC).
+A structured repository covering NLP concepts — text preprocessing, feature engineering, and language representation.
 
 ## 📘 Concept Cards
 - [Tokenization](concept-cards/tokenization.md)
