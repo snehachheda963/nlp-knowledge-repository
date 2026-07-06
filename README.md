@@ -18,7 +18,7 @@ A structured repository covering Week 1 NLP concepts — text preprocessing, fea
 - [Feature Engineering Pipeline](workflow-diagrams/feature-engineering-pipeline.md)
 
 ## 🌍 Real-World Applications
-- [Applications of Week 1 NLP Concepts](applications/real-world-applications.md)
+- [Applications of Week 1 NLP Concepts](application/real-world-applications.md)
 
 ## 🔬 Research & Industry Insights
 - [Recent Research, Industry Use Cases, and Open-Source Tools](research-insights/research-and-industry.md)
