@@ -1,6 +1,6 @@
 # Real-World Applications of Week 1 NLP Concepts
 
-**Contributors:** [Your Name] & [Partner's Name]
+**Contributors:** Sneha & Mahek
 
 ## 1. Search Engines
 **Relevant concepts:** Tokenization, Stop-word Removal, TF-IDF
