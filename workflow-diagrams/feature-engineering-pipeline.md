@@ -1,6 +1,6 @@
 # Workflow Diagram: Feature Engineering Pipeline
 
-**Contributor:** [Partner's Name]
+**Contributor:** Mahek
 
 ## Diagram
 
