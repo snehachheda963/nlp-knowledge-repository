@@ -1,6 +1,6 @@
 # Comparative Analysis: Stemming vs Lemmatization
 
-**Contributor:** Sneha [Your Roll No: 25]
+**Contributor:** Sneha 
 
 ## Overview
 Both stemming and lemmatization reduce words to a base form, but they differ significantly in method, accuracy, and computational cost.
