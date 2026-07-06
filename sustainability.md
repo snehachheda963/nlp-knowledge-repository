@@ -1,6 +1,6 @@
 # How NLP Can Contribute to Society and Sustainable Development
 
-**Contributors:** [Your Name] & [Partner's Name]
+**Contributors:** Sneha & Mahek
 
 Natural Language Processing has quietly become one of the most impactful tools for advancing social good, particularly in a linguistically diverse country like India. Its contributions span accessibility, education, governance, and inclusion, making it directly relevant to several United Nations Sustainable Development Goals.
 
