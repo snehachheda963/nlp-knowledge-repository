@@ -1,7 +1,6 @@
 # Concept Card: Word Embeddings
 
-**Contributor:** [Partner's Name]
-
+**Contributor:** Mahek
 ## 1. Definition
 Word embeddings are dense, low-dimensional numerical vector representations of words, where words with similar meanings are positioned closer together in vector space. Unlike simpler methods like one-hot encoding, embeddings capture semantic relationships between words.
 
