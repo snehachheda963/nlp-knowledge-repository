@@ -1,6 +1,6 @@
 # Concept Card: One-Hot Encoding
 
-**Contributor:** [Partner's Name]
+**Contributor:** Mahek
 
 ## 1. Definition
 One-Hot Encoding is a technique for representing words as binary vectors, where each word in a vocabulary is represented by a vector of 0s and a single 1, marking that word's unique position in the vocabulary.
