@@ -1,6 +1,6 @@
 # Workflow Diagram: Complete Text Preprocessing Pipeline
 
-**Contributor:** Sneha [Your Roll No: 25]
+**Contributor:** Sneha
 
 ## Diagram
 
