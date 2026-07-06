@@ -1,6 +1,6 @@
 # Concept Card: TF-IDF (Term Frequency – Inverse Document Frequency)
 
-**Contributor:** Sneha [Your Roll No: 25]
+**Contributor:** Sneha
 
 ## 1. Definition
 TF-IDF is a statistical measure used to evaluate how important a word is to a specific document within a larger collection of documents (called a corpus). It combines two metrics — Term Frequency (TF) and Inverse Document Frequency (IDF) — into a single score.
