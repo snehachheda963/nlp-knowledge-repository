@@ -1,6 +1,6 @@
 # Comparative Analysis: Word2Vec vs FastText
 
-**Contributor:** [Partner's Name]
+**Contributor:** Mahek
 
 ## Overview
 Both Word2Vec and FastText are popular methods for generating word embeddings, but they differ in how they treat the internal structure of words, which has major implications for handling rare and unseen words.
