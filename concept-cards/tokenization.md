@@ -1,6 +1,6 @@
 # Concept Card: Tokenization
 
-**Contributor:** Sneha [Your Roll No: 25]
+**Contributor:** Sneha 
 
 ## 1. Definition
 Tokenization is the process of breaking down a continuous stream of text into smaller units called *tokens* — which can be words, subwords, or even characters — so that a machine can process them individually.
