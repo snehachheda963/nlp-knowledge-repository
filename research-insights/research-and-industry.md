@@ -1,6 +1,6 @@
 # Research and Industry Insights
 
-**Contributors:** [Your Name] & [Partner's Name]
+**Contributors:** Sneha & Mahek
 
 ## Recent Research Developments
 
