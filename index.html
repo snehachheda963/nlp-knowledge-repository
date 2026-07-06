@@ -2,121 +2,489 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NLP Knowledge Artifact Repository</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧠</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
-    background: #f7f7f5;
-    color: #1a1a1a;
-    line-height: 1.6;
-    padding: 40px 20px;
+  :root[data-theme="dark"]{
+    --bg:#0d1117; --bg-alt:#151b26; --card:#161d2b; --text:#e6ebf5; --muted:#8b96ab;
+    --border:#232b3d; --accent:#5eead4; --accent2:#f0b429; --accent3:#f472b6;
+    --code-bg:#0a0e16; --shadow: 0 8px 24px rgba(0,0,0,0.35);
   }
-  .container { max-width: 900px; margin: 0 auto; }
-  header { text-align: center; margin-bottom: 40px; }
-  header h1 { font-size: 32px; font-weight: 600; margin-bottom: 8px; }
-  header p { color: #555; font-size: 16px; }
-  .byline { font-size: 14px; color: #888; margin-top: 6px; }
-  .section { margin-bottom: 36px; }
-  .section h2 {
-    font-size: 20px;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #ddd;
+  :root[data-theme="light"]{
+    --bg:#f7f7f5; --bg-alt:#ffffff; --card:#ffffff; --text:#181a1f; --muted:#5b6472;
+    --border:#e3e3df; --accent:#0f766e; --accent2:#b45309; --accent3:#be185d;
+    --code-bg:#f1f1ee; --shadow: 0 8px 24px rgba(0,0,0,0.06);
   }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Inter',-apple-system,"Segoe UI",Roboto,sans-serif;
+    line-height:1.65; transition:background .2s, color .2s;
   }
-  a.card {
-    display: block;
-    background: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 10px;
-    padding: 16px 18px;
-    text-decoration: none;
-    color: #1a1a1a;
-    font-weight: 500;
-    transition: transform 0.15s, box-shadow 0.15s;
+  code, pre, .mono { font-family:'JetBrains Mono', monospace; }
+
+  .topbar{
+    position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:14px;
+    padding:12px 20px; background:var(--bg-alt); border-bottom:1px solid var(--border);
+    backdrop-filter:blur(6px);
   }
-  a.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border-color: #999;
+  .brand{ display:flex; align-items:center; gap:10px; font-weight:700; font-size:16px; white-space:nowrap;}
+  .brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent);}
+  .search-wrap{ flex:1; max-width:420px; position:relative;}
+  .search-wrap input{
+    width:100%; padding:9px 14px 9px 34px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:13.5px; font-family:inherit;
   }
-  a.card .tag {
-    display: block;
-    font-size: 12px;
-    color: #888;
-    font-weight: 400;
-    margin-top: 4px;
+  .search-wrap input:focus{ outline:2px solid var(--accent); outline-offset:1px;}
+  .search-icon{ position:absolute; left:11px; top:50%; transform:translateY(-50%); opacity:.5; font-size:14px;}
+  .theme-btn, .menu-btn{
+    border:1px solid var(--border); background:var(--bg); color:var(--text); border-radius:8px;
+    padding:8px 12px; cursor:pointer; font-size:13px; font-family:inherit;
   }
-  footer {
-    text-align: center;
-    margin-top: 50px;
-    font-size: 13px;
-    color: #999;
+  .theme-btn:hover, .menu-btn:hover{ border-color:var(--accent); }
+  .menu-btn{ display:none; }
+
+  .layout{ display:flex; max-width:1240px; margin:0 auto; min-height:calc(100vh - 58px); }
+  .sidebar{
+    width:270px; flex-shrink:0; padding:22px 14px; border-right:1px solid var(--border);
+    position:sticky; top:58px; height:calc(100vh - 58px); overflow-y:auto;
+  }
+  .sidebar .cat{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:18px 8px 8px; font-weight:700;}
+  .sidebar .cat:first-child{ margin-top:4px; }
+  .navlink{
+    display:flex; flex-direction:column; gap:1px; padding:8px 10px; border-radius:8px; cursor:pointer;
+    color:var(--text); text-decoration:none; font-size:13.5px; font-weight:500; margin-bottom:2px;
+  }
+  .navlink small{ color:var(--muted); font-weight:400; font-size:11px;}
+  .navlink:hover{ background:var(--bg-alt); }
+  .navlink.active{ background:var(--accent); color:#04231f; }
+  .navlink.active small{ color:#0a3833; }
+  .navlink.special{ color:var(--accent2); }
+
+  main{ flex:1; min-width:0; padding:34px 40px 80px; }
+
+  .hero h1{ font-size:34px; margin:0 0 8px; font-weight:800; letter-spacing:-0.5px;}
+  .hero .subtitle{ color:var(--muted); font-size:16px; max-width:640px; }
+  .byline{ margin-top:10px; font-size:13px; color:var(--muted); }
+  .byline .tag{
+    display:inline-block; padding:2px 8px; border-radius:6px; background:var(--bg-alt);
+    border:1px solid var(--border); font-family:'JetBrains Mono',monospace; font-size:11px; margin-left:6px;
+  }
+  .stats{ display:flex; gap:10px; flex-wrap:wrap; margin:22px 0 8px; }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 16px; min-width:110px;
+  }
+  .stat b{ display:block; font-size:22px; color:var(--accent); font-family:'JetBrains Mono',monospace;}
+  .stat span{ font-size:11.5px; color:var(--muted); }
+
+  .tokenizer-box{
+    margin-top:28px; background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:22px; box-shadow:var(--shadow);
+  }
+  .tokenizer-box .label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:12px; font-weight:700;}
+  .hero-tokens{ display:flex; flex-wrap:wrap; gap:8px; min-height:44px; }
+  .token-chip{
+    padding:6px 12px; border-radius:6px; background:var(--code-bg); border:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace; font-size:13px; opacity:0; transform:translateY(6px);
+    animation:tokenIn .35s ease forwards;
+  }
+  .token-chip:nth-child(odd){ border-color:var(--accent); }
+  @keyframes tokenIn{ to{ opacity:1; transform:none; } }
+  .tokenize-btn{
+    margin-top:16px; background:var(--accent); color:#04231f; border:none; border-radius:8px;
+    padding:9px 16px; font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;
+  }
+  .tokenize-btn:hover{ opacity:.88; }
+
+  .home-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin-top:34px; }
+  .home-card{
+    display:block; background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; text-decoration:none; color:var(--text); cursor:pointer; transition:transform .15s, box-shadow .15s, border-color .15s;
+  }
+  .home-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent); }
+  .home-card .icon{ font-size:20px; }
+  .home-card h3{ font-size:14.5px; margin:8px 0 2px; }
+  .home-card p{ font-size:12.5px; color:var(--muted); margin:0; }
+
+  .doc-header{ margin-bottom: 18px; }
+  .doc-header .crumb{ font-size:12px; color:var(--muted); margin-bottom:6px; }
+  .doc-header h1{ font-size:26px; margin:0; font-weight:800; }
+  .markdown-body h1{ font-size:24px; margin-top:0;}
+  .markdown-body h2{
+    font-size:18px; margin-top:30px; padding-bottom:8px; border-bottom:1px solid var(--border);
+  }
+  .markdown-body h3{ font-size:15.5px; margin-top:22px; color:var(--accent); }
+  .markdown-body p, .markdown-body li{ font-size:14.5px; color:var(--text); }
+  .markdown-body strong{ color:var(--accent); }
+  .markdown-body code{
+    background:var(--code-bg); padding:2px 6px; border-radius:5px; font-size:13px; border:1px solid var(--border);
+  }
+  .markdown-body pre{
+    background:var(--code-bg); border:1px solid var(--border); border-radius:10px; padding:14px 16px; overflow-x:auto;
+  }
+  .markdown-body pre code{ border:none; background:none; padding:0; }
+  .markdown-body table{ border-collapse:collapse; width:100%; margin:14px 0; font-size:13.5px; }
+  .markdown-body th, .markdown-body td{ border:1px solid var(--border); padding:9px 12px; text-align:left; vertical-align:top; }
+  .markdown-body th{ background:var(--bg-alt); }
+  .markdown-body blockquote{ border-left:3px solid var(--accent); margin:14px 0; padding:2px 16px; color:var(--muted); }
+  .markdown-body .mermaid{ background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; text-align:center; margin:16px 0;}
+  .loading{ color:var(--muted); font-size:13.5px; }
+
+  .quiz-q{ background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+  .quiz-q p.qtext{ font-weight:600; font-size:14.5px; margin:0 0 12px; }
+  .quiz-opt{ display:block; padding:9px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:7px; cursor:pointer; font-size:13.5px; }
+  .quiz-opt:hover{ border-color:var(--accent); }
+  .quiz-opt input{ margin-right:8px; }
+  .quiz-opt.correct{ border-color:var(--accent); background:rgba(94,234,212,.12); }
+  .quiz-opt.wrong{ border-color:var(--accent3); background:rgba(244,114,182,.12); }
+  .quiz-explain{ font-size:12.5px; color:var(--muted); margin-top:10px; display:none; }
+  .submit-btn{
+    background:var(--accent); color:#04231f; border:none; border-radius:8px; padding:11px 22px;
+    font-weight:700; font-size:14px; cursor:pointer; font-family:inherit; margin-top:6px;
+  }
+  .score-box{ background:var(--card); border:1px solid var(--accent); border-radius:12px; padding:18px 20px; margin-bottom:18px; font-size:15px; font-weight:600; display:none; }
+
+  footer{ text-align:center; padding:26px; font-size:12.5px; color:var(--muted); border-top:1px solid var(--border); }
+  footer a{ color:var(--accent); }
+
+  mark{ background:var(--accent2); color:#241a02; padding:0 2px; border-radius:3px; }
+
+  @media (max-width: 880px){
+    .sidebar{ position:fixed; left:0; top:58px; z-index:30; background:var(--bg); transform:translateX(-100%); transition:transform .2s; box-shadow:var(--shadow); }
+    .sidebar.open{ transform:translateX(0); }
+    .menu-btn{ display:inline-block; }
+    main{ padding:24px 18px 60px; }
+    .search-wrap{ max-width:none; }
   }
 </style>
 </head>
 <body>
-<div class="container">
 
-  <header>
-    <h1>NLP Knowledge Artifact Repository</h1>
-    <p>A structured repository covering Week 1 NLP concepts — preprocessing, feature engineering, and language representation.</p>
-    <p class="byline">by Sneha &amp; Mahek · CMCOR1PE301.1 · SAKEC</p>
-  </header>
-
-  <div class="section">
-    <h2>Concept Cards</h2>
-    <div class="grid">
-      <a class="card" href="concept-cards/tokenization.md">Tokenization<span class="tag">Text Preprocessing</span></a>
-      <a class="card" href="concept-cards/tf-idf.md">TF-IDF<span class="tag">Feature Engineering</span></a>
-      <a class="card" href="concept-cards/word-embeddings.md">Word Embeddings<span class="tag">Language Representation</span></a>
-      <a class="card" href="concept-cards/one-hot-encoding.md">One-Hot Encoding<span class="tag">Language Representation</span></a>
-    </div>
+<div class="topbar">
+  <button class="menu-btn" id="menuBtn">☰</button>
+  <div class="brand"><span class="dot"></span> NLP Knowledge Repo</div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input id="searchInput" type="text" placeholder="Search concepts, comparisons, applications...">
   </div>
-
-  <div class="section">
-    <h2>Comparative Analysis</h2>
-    <div class="grid">
-      <a class="card" href="comparative-analysis/stemming-vs-lemmatization.md">Stemming vs Lemmatization</a>
-      <a class="card" href="comparative-analysis/word2vec-vs-fasttext.md">Word2Vec vs FastText</a>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Workflow Diagrams</h2>
-    <div class="grid">
-      <a class="card" href="workflow-diagrams/preprocessing-pipeline.md">Text Preprocessing Pipeline</a>
-      <a class="card" href="workflow-diagrams/feature-engineering-pipeline.md">Feature Engineering Pipeline</a>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Applications &amp; Insights</h2>
-    <div class="grid">
-      <a class="card" href="applications/real-world-applications.md">Real-World Applications</a>
-      <a class="card" href="research-insights/research-and-industry.md">Research &amp; Industry Insights</a>
-      <a class="card" href="sustainability.md">Sustainability &amp; Societal Impact</a>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>Reflections &amp; Team</h2>
-    <div class="grid">
-      <a class="card" href="reflection-notes/sneha-reflection.md">Sneha's Reflection</a>
-      <a class="card" href="reflection-notes/partner-reflection.md">Mahek's Reflection</a>
-      <a class="card" href="contribution-matrix.md">Contribution Matrix</a>
-    </div>
-  </div>
-
-  <footer>
-    Built for CMCOR1PE301.1 — Natural Language Processing, Semester V, SAKEC.
-  </footer>
-
+  <button class="theme-btn" id="themeBtn">🌙 Dark</button>
 </div>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main id="content"></main>
+</div>
+
+<footer>
+  Built for <strong>CMCOR1PE301.1</strong> — Natural Language Processing, Semester V, SAKEC · by Sneha &amp; Mahek ·
+  <a href="https://github.com/snehachheda963/nlp-knowledge-repository" target="_blank">View source on GitHub</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+const CONTENT = [
+  { id:'tokenization',      title:'Tokenization',                 icon:'📘', category:'Concept Cards', tag:'Text Preprocessing',       path:'concept-cards/tokenization.md',
+    blurb:'Splitting raw text into words, subwords, or characters.' },
+  { id:'tfidf',             title:'TF-IDF',                        icon:'📘', category:'Concept Cards', tag:'Feature Engineering',       path:'concept-cards/tf-idf.md',
+    blurb:'Weighing words by importance across a corpus.' },
+  { id:'embeddings',        title:'Word Embeddings',               icon:'📘', category:'Concept Cards', tag:'Language Representation',   path:'concept-cards/word-embeddings.md',
+    blurb:'Dense vectors that capture word meaning.' },
+  { id:'onehot',            title:'One-Hot Encoding',              icon:'📘', category:'Concept Cards', tag:'Language Representation',   path:'concept-cards/one-hot-encoding.md',
+    blurb:'The simplest way to turn words into numbers.' },
+  { id:'stem-lemma',        title:'Stemming vs Lemmatization',     icon:'⚖️', category:'Comparative Analysis', path:'comparative-analysis/stemming-vs-lemmatization.md',
+    blurb:'Speed vs accuracy in reducing words to their root.' },
+  { id:'w2v-ft',            title:'Word2Vec vs FastText',          icon:'⚖️', category:'Comparative Analysis', path:'comparative-analysis/word2vec-vs-fasttext.md',
+    blurb:'Whole-word vs subword embedding strategies.' },
+  { id:'prep-pipeline',     title:'Text Preprocessing Pipeline',   icon:'🔄', category:'Workflow Diagrams', path:'workflow-diagrams/preprocessing-pipeline.md', hasMermaid:true,
+    blurb:'From raw text to clean, model-ready tokens.' },
+  { id:'feat-pipeline',     title:'Feature Engineering Pipeline',  icon:'🔄', category:'Workflow Diagrams', path:'workflow-diagrams/feature-engineering-pipeline.md', hasMermaid:true,
+    blurb:'Turning clean tokens into numeric feature vectors.' },
+  { id:'applications',     title:'Real-World Applications',       icon:'🌍', category:'Applications & Insights', path:'application/real-world-applications.md',
+    blurb:'Where these Week 1 concepts show up in the real world.' },
+  { id:'research',          title:'Research & Industry Insights',  icon:'🔬', category:'Applications & Insights', path:'research-insights/research-and-industry.md',
+    blurb:'From BERT to IndicNLP — where the field is heading.' },
+  { id:'sustainability',    title:'Sustainability & Societal Impact', icon:'🌱', category:'Applications & Insights', path:'sustainability.md',
+    blurb:'NLP as a tool for inclusion in a multilingual India.' },
+  { id:'reflection-sneha',  title:"Sneha's Reflection",            icon:'📝', category:'Reflections & Team', path:'reflection-notes/sneha-reflection.md',
+    blurb:'What clicked, what was hard, what comes next.' },
+  { id:'reflection-partner',title:"Mahek's Reflection",            icon:'📝', category:'Reflections & Team', path:'reflection-notes/partner-reflection.md',
+    blurb:"Mahek's takeaways from the activity." },
+  { id:'contribution',      title:'Contribution Matrix',           icon:'👥', category:'Reflections & Team', path:'contribution-matrix.md',
+    blurb:'Who worked on what, at a glance.' },
+];
+
+const DEMO_SENTENCES = [
+  "RBI mandates banks to resolve complaints within 30 days.",
+  "Tokenization breaks raw text into meaningful units.",
+  "TF-IDF highlights the words that matter most in a document.",
+  "Embeddings place similar words closer together in vector space.",
+  "FastText handles rare words better than Word2Vec."
+];
+
+const QUIZ = [
+  { q:"What is the main purpose of tokenization in an NLP pipeline?",
+    options:["Translate text into another language","Split raw text into smaller, processable units","Remove all punctuation permanently","Train a neural network"],
+    correct:1,
+    explain:"Tokenization is the entry point of almost every NLP pipeline — you can't analyze or vectorize text until it's split into tokens." },
+  { q:"A word with a high TF-IDF score in a document most likely means:",
+    options:["It's a common stop word like 'the'","It appears frequently in that document but rarely elsewhere","It appears in every document in the corpus","It has no numeric representation"],
+    correct:1,
+    explain:"High TF-IDF = frequent locally, rare globally — which is exactly what makes a word a strong keyword for that specific document." },
+  { q:"Why can't one-hot encoding capture that 'happy' and 'joyful' are related?",
+    options:["It only works on numbers, not words","Every word's vector is equally distant from every other word's vector","It requires a neural network to run","It only encodes the first letter of each word"],
+    correct:1,
+    explain:"One-hot vectors have no notion of similarity — 'happy' and 'joyful' are just as unrelated as 'happy' and 'car' in this representation." },
+  { q:"For morphologically rich languages like Hindi or Marathi, why is lemmatization generally safer than stemming?",
+    options:["Lemmatization is always faster to compute","Stemming can't run on non-English text at all","Naive suffix-stripping rules distort many word forms in richly inflected languages","Lemmatization doesn't require a dictionary"],
+    correct:2,
+    explain:"Stemming's simple rules break down when a language has many inflections per root, while lemmatization's dictionary-based approach handles this more reliably." },
+  { q:"What problem does FastText solve that plain Word2Vec doesn't?",
+    options:["It trains faster on small vocabularies","It can construct reasonable vectors for unseen (OOV) words using subword n-grams","It removes the need for any training data","It works only on numeric data"],
+    correct:1,
+    explain:"Word2Vec has no vector for a word it never saw during training. FastText builds vectors from character n-grams, so it can approximate unseen or rare words." },
+  { q:"In the text preprocessing pipeline, why must case normalization happen before stop-word removal?",
+    options:["It doesn't matter what order they happen in","Stop-word lists are usually lowercase, so \"The\" won't match unless the text is normalized first","Stop-word removal must always happen first","Case normalization requires stop words to be removed first"],
+    correct:1,
+    explain:"If \"The\" isn't lowercased first, a lowercase stop-word list won't recognize it as a stop word, and it'll slip through uncleaned." }
+];
+
+let currentTheme = localStorage.getItem('theme') || 'dark';
+let contentCache = {};
+let activeId = null;
+
+document.documentElement.setAttribute('data-theme', currentTheme);
+
+function updateThemeBtn(){
+  document.getElementById('themeBtn').textContent = currentTheme === 'dark' ? '🌙 Dark' : '☀️ Light';
+}
+updateThemeBtn();
+
+document.getElementById('themeBtn').addEventListener('click', () => {
+  currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('theme', currentTheme);
+  updateThemeBtn();
+});
+
+document.getElementById('menuBtn').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('open');
+});
+
+function groupByCategory(items){
+  const order = ['Concept Cards','Comparative Analysis','Workflow Diagrams','Applications & Insights','Reflections & Team'];
+  const groups = {};
+  order.forEach(o => groups[o] = []);
+  items.forEach(i => { (groups[i.category] = groups[i.category] || []).push(i); });
+  return { order, groups };
+}
+
+function renderSidebar(filter){
+  const sidebar = document.getElementById('sidebar');
+  const filtered = filter ? CONTENT.filter(matchesFilter.bind(null, filter)) : CONTENT;
+  const { order, groups } = groupByCategory(filtered);
+  let html = `<a class="navlink special" data-id="__home" href="#">🏠 Home</a>`;
+  html += `<a class="navlink special" data-id="__quiz" href="#">🧪 Test Your Knowledge</a>`;
+  order.forEach(cat => {
+    const items = groups[cat];
+    if(!items || !items.length) return;
+    html += `<div class="cat">${cat}</div>`;
+    items.forEach(item => {
+      html += `<a class="navlink" data-id="${item.id}" href="#">${item.icon} ${item.title}${item.tag ? `<small>${item.tag}</small>`:''}</a>`;
+    });
+  });
+  if(filter && !filtered.length){
+    html += `<div style="padding:10px;color:var(--muted);font-size:13px;">No matches for "${filter}"</div>`;
+  }
+  sidebar.innerHTML = html;
+  sidebar.querySelectorAll('.navlink').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      navigate(a.dataset.id);
+      sidebar.classList.remove('open');
+    });
+  });
+  highlightActive();
+}
+
+function matchesFilter(filter, item){
+  const f = filter.toLowerCase();
+  if(item.title.toLowerCase().includes(f)) return true;
+  if(item.blurb && item.blurb.toLowerCase().includes(f)) return true;
+  if(contentCache[item.id] && contentCache[item.id].toLowerCase().includes(f)) return true;
+  return false;
+}
+
+function highlightActive(){
+  document.querySelectorAll('.navlink').forEach(a => {
+    a.classList.toggle('active', a.dataset.id === activeId);
+  });
+}
+
+function renderHome(){
+  activeId = '__home';
+  highlightActive();
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    <div class="hero">
+      <h1>NLP Knowledge Artifact Repository</h1>
+      <p class="subtitle">A structured, hands-on exploration of Week 1 NLP concepts — text preprocessing, feature engineering, and language representation — built for CCE Activity I.</p>
+      <p class="byline">by Sneha &amp; Mahek <span class="tag">CMCOR1PE301.1</span> <span class="tag">SAKEC</span></p>
+
+      <div class="stats">
+        <div class="stat"><b>4</b><span>Concept Cards</span></div>
+        <div class="stat"><b>2</b><span>Comparative Analyses</span></div>
+        <div class="stat"><b>2</b><span>Workflow Pipelines</span></div>
+        <div class="stat"><b>3</b><span>Applications &amp; Insights</span></div>
+        <div class="stat"><b>6</b><span>Quiz Questions</span></div>
+      </div>
+
+      <div class="tokenizer-box">
+        <div class="label">Live demo — see tokenization in action</div>
+        <div class="hero-tokens" id="heroTokens"></div>
+        <button class="tokenize-btn" id="tokenizeBtn">Tokenize another sentence →</button>
+      </div>
+    </div>
+
+    <div class="home-grid">
+      ${CONTENT.map(item => `
+        <div class="home-card" data-id="${item.id}">
+          <div class="icon">${item.icon}</div>
+          <h3>${item.title}</h3>
+          <p>${item.blurb || ''}</p>
+        </div>`).join('')}
+    </div>
+  `;
+  document.querySelectorAll('.home-card').forEach(c => {
+    c.addEventListener('click', () => navigate(c.dataset.id));
+  });
+  let demoIdx = 0;
+  renderTokens(DEMO_SENTENCES[demoIdx]);
+  document.getElementById('tokenizeBtn').addEventListener('click', () => {
+    demoIdx = (demoIdx + 1) % DEMO_SENTENCES.length;
+    renderTokens(DEMO_SENTENCES[demoIdx]);
+  });
+}
+
+function renderTokens(sentence){
+  const wrap = document.getElementById('heroTokens');
+  const tokens = sentence.match(/[\w₹]+|[.,!?]/g) || [];
+  wrap.innerHTML = tokens.map((t,i) => `<span class="token-chip" style="animation-delay:${i*45}ms">${t}</span>`).join('');
+}
+
+async function fetchDoc(item){
+  if(contentCache[item.id]) return contentCache[item.id];
+  const res = await fetch(item.path);
+  const text = await res.text();
+  contentCache[item.id] = text;
+  return text;
+}
+
+async function renderDoc(item){
+  activeId = item.id;
+  highlightActive();
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    <div class="doc-header">
+      <div class="crumb">${item.category}${item.tag ? ' / ' + item.tag : ''}</div>
+    </div>
+    <div class="markdown-body loading">Loading ${item.title}…</div>
+  `;
+  try{
+    const raw = await fetchDoc(item);
+    const html = marked.parse(raw, { gfm:true, breaks:false });
+    const container = document.createElement('div');
+    container.className = 'markdown-body';
+    container.innerHTML = html;
+    container.querySelectorAll('pre code.language-mermaid, code.language-mermaid').forEach(codeEl => {
+      const pre = codeEl.closest('pre') || codeEl;
+      const div = document.createElement('div');
+      div.className = 'mermaid';
+      div.textContent = codeEl.textContent;
+      pre.replaceWith(div);
+    });
+    el.querySelector('.markdown-body').replaceWith(container);
+    if(item.hasMermaid && window.mermaid){
+      mermaid.initialize({ startOnLoad:false, theme: currentTheme === 'dark' ? 'dark' : 'default' });
+      await mermaid.run({ querySelector: '.mermaid' });
+    }
+  }catch(err){
+    el.querySelector('.markdown-body').innerHTML = `<p style="color:var(--accent3)">Couldn't load this file (${item.path}). Make sure it exists at that path relative to index.html.</p>`;
+  }
+}
+
+function renderQuiz(){
+  activeId = '__quiz';
+  highlightActive();
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    <div class="doc-header">
+      <h1>🧪 Test Your Knowledge</h1>
+      <p style="color:var(--muted);font-size:14px;margin-top:6px;">Six questions covering everything in this repository. Answer, then check your score.</p>
+    </div>
+    <div class="score-box" id="scoreBox"></div>
+    <div id="quizList"></div>
+    <button class="submit-btn" id="quizSubmit">Check my answers</button>
+  `;
+  const list = document.getElementById('quizList');
+  list.innerHTML = QUIZ.map((item, qi) => `
+    <div class="quiz-q" data-qi="${qi}">
+      <p class="qtext">${qi+1}. ${item.q}</p>
+      ${item.options.map((opt, oi) => `
+        <label class="quiz-opt" data-oi="${oi}">
+          <input type="radio" name="q${qi}" value="${oi}"> ${opt}
+        </label>
+      `).join('')}
+      <div class="quiz-explain" data-qi="${qi}">${item.explain}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('quizSubmit').addEventListener('click', () => {
+    let score = 0;
+    QUIZ.forEach((item, qi) => {
+      const selected = document.querySelector(`input[name="q${qi}"]:checked`);
+      const qDiv = document.querySelector(`.quiz-q[data-qi="${qi}"]`);
+      const opts = qDiv.querySelectorAll('.quiz-opt');
+      opts.forEach((opt, oi) => {
+        opt.classList.remove('correct','wrong');
+        if(oi === item.correct) opt.classList.add('correct');
+        else if(selected && parseInt(selected.value) === oi) opt.classList.add('wrong');
+      });
+      qDiv.querySelector('.quiz-explain').style.display = 'block';
+      if(selected && parseInt(selected.value) === item.correct) score++;
+    });
+    const box = document.getElementById('scoreBox');
+    box.style.display = 'block';
+    box.textContent = `You scored ${score} / ${QUIZ.length} — ${score === QUIZ.length ? "perfect score! 🎉" : score >= QUIZ.length/2 ? "solid grasp of the material." : "worth a re-read of the concept cards."}`;
+    box.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+}
+
+function navigate(id){
+  if(id === '__home'){ renderHome(); return; }
+  if(id === '__quiz'){ renderQuiz(); return; }
+  const item = CONTENT.find(i => i.id === id);
+  if(item) renderDoc(item);
+}
+
+let allPrefetched = false;
+async function prefetchAll(){
+  if(allPrefetched) return;
+  allPrefetched = true;
+  await Promise.all(CONTENT.map(item => fetchDoc(item).catch(()=>{})));
+}
+
+document.getElementById('searchInput').addEventListener('input', async (e) => {
+  const val = e.target.value.trim();
+  if(val.length >= 2) await prefetchAll();
+  renderSidebar(val);
+});
+
+renderSidebar('');
+renderHome();
+</script>
 </body>
 </html>
