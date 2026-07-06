@@ -1,6 +1,6 @@
 # Reflection Note
 
-**Contributor:** Sneha [Your Roll No: 25]
+**Contributor:** Sneha 
 
 ## What I Learned
 Working on this activity gave me a much clearer picture of how raw text actually becomes usable input for an NLP model. Before this, I understood these techniques as separate, disconnected topics — but building the concept cards and workflow diagram helped me see them as a connected pipeline, where each step depends on the one before it.
