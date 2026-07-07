@@ -366,6 +366,7 @@ function renderSidebar(filter){
   const filtered = filter ? CONTENT.filter(matchesFilter.bind(null, filter)) : CONTENT;
   const { order, groups } = groupByCategory(filtered);
   let html = `<a class="navlink special" data-id="__home" href="#">🏠 Home</a>`;
+  html += `<a class="navlink special" data-id="__demos" href="#">⚡ Live Demos</a>`;
   html += `<a class="navlink special" data-id="__quiz" href="#">🧪 Test Your Knowledge</a>`;
   order.forEach(cat => {
     const items = groups[cat];
@@ -421,44 +422,25 @@ function renderHome(){
         <div class="stat"><b>6</b><span>Quiz Questions</span></div>
       </div>
 
-      <div class="tokenizer-box">
-        <div class="label">Live demo — type anything and watch it get tokenized</div>
-        <div class="demo-input-row">
-          <input id="tokenInput" type="text" value="RBI mandates banks to resolve complaints within 30 days." placeholder="Type a sentence...">
-          <button class="tokenize-btn" id="tokenizeBtn">Tokenize →</button>
-        </div>
-        <div class="demo-examples" id="tokenExamples"></div>
-        <div class="hero-tokens" id="heroTokens"></div>
-        <div class="demo-meta" id="tokenMeta"></div>
       </div>
     </div>
 
     <div class="home-grid">
+      <div class="home-card" data-id="__demos" style="border-color:var(--accent2)">
+        <div class="icon">⚡</div>
+        <h3>Live Demos</h3>
+        <p>Play with tokenization, TF-IDF, stemming vs lemmatization, and one-hot vectors — all in one place.</p>
+      </div>
       ${CONTENT.map(item => `
         <div class="home-card" data-id="${item.id}">
           <div class="icon">${item.icon}</div>
-          <h3>${item.title}${['tfidf','stem-lemma','onehot'].includes(item.id) ? ' <span class="live-badge">🎮 Try it live</span>' : ''}</h3>
+          <h3>${item.title}</h3>
           <p>${item.blurb || ''}</p>
         </div>`).join('')}
     </div>
   `;
   document.querySelectorAll('.home-card').forEach(c => {
     c.addEventListener('click', () => navigate(c.dataset.id));
-  });
-  const input = document.getElementById('tokenInput');
-  const runTokenize = () => renderTokens(input.value || DEMO_SENTENCES[0]);
-  runTokenize();
-  document.getElementById('tokenizeBtn').addEventListener('click', runTokenize);
-  input.addEventListener('keydown', e => { if(e.key === 'Enter') runTokenize(); });
-  let debounceTimer;
-  input.addEventListener('input', () => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(runTokenize, 300);
-  });
-  const examplesWrap = document.getElementById('tokenExamples');
-  examplesWrap.innerHTML = DEMO_SENTENCES.map(s => `<span class="example-chip">${s.length > 42 ? s.slice(0,42)+'…' : s}</span>`).join('');
-  examplesWrap.querySelectorAll('.example-chip').forEach((chip, i) => {
-    chip.addEventListener('click', () => { input.value = DEMO_SENTENCES[i]; runTokenize(); });
   });
 }
 
@@ -577,10 +559,48 @@ function renderOneHotDemo(container){
   update();
 }
 
-function renderDemoFor(item, container){
-  if(item.id === 'tfidf') renderTfidfDemo(container);
-  else if(item.id === 'stem-lemma') renderStemLemmaDemo(container);
-  else if(item.id === 'onehot') renderOneHotDemo(container);
+function renderDemos(){
+  activeId = '__demos';
+  highlightActive();
+  const el = document.getElementById('content');
+  el.innerHTML = `
+    <div class="doc-header">
+      <h1>⚡ Live Demos</h1>
+      <p style="color:var(--muted);font-size:14px;margin-top:6px;">Four interactive tools — play with real text and see the concepts compute in front of you.</p>
+    </div>
+    <div class="tokenizer-box">
+      <div class="label">Tokenization — type anything and watch it get tokenized</div>
+      <div class="demo-input-row">
+        <input id="tokenInput" type="text" value="RBI mandates banks to resolve complaints within 30 days." placeholder="Type a sentence...">
+        <button class="tokenize-btn" id="tokenizeBtn">Tokenize →</button>
+      </div>
+      <div class="demo-examples" id="tokenExamples"></div>
+      <div class="hero-tokens" id="heroTokens"></div>
+      <div class="demo-meta" id="tokenMeta"></div>
+    </div>
+    <div id="demoTfidf"></div>
+    <div id="demoStemLemma"></div>
+    <div id="demoOnehot"></div>
+  `;
+  const input = document.getElementById('tokenInput');
+  const runTokenize = () => renderTokens(input.value || DEMO_SENTENCES[0]);
+  runTokenize();
+  document.getElementById('tokenizeBtn').addEventListener('click', runTokenize);
+  input.addEventListener('keydown', e => { if(e.key === 'Enter') runTokenize(); });
+  let debounceTimer;
+  input.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runTokenize, 300);
+  });
+  const examplesWrap = document.getElementById('tokenExamples');
+  examplesWrap.innerHTML = DEMO_SENTENCES.map(s => `<span class="example-chip">${s.length > 42 ? s.slice(0,42)+'…' : s}</span>`).join('');
+  examplesWrap.querySelectorAll('.example-chip').forEach((chip, i) => {
+    chip.addEventListener('click', () => { input.value = DEMO_SENTENCES[i]; runTokenize(); });
+  });
+
+  renderTfidfDemo(document.getElementById('demoTfidf'));
+  renderStemLemmaDemo(document.getElementById('demoStemLemma'));
+  renderOneHotDemo(document.getElementById('demoOnehot'));
 }
 
 async function fetchDoc(item){
@@ -619,7 +639,6 @@ async function renderDoc(item){
       mermaid.initialize({ startOnLoad:false, theme: currentTheme === 'dark' ? 'dark' : 'default' });
       await mermaid.run({ querySelector: '.mermaid' });
     }
-    renderDemoFor(item, el);
   }catch(err){
     el.querySelector('.markdown-body').innerHTML = `<p style="color:var(--accent3)">Couldn't load this file (${item.path}). Make sure it exists at that path relative to index.html.</p>`;
   }
@@ -675,6 +694,7 @@ function renderQuiz(){
 function navigate(id){
   if(id === '__home'){ renderHome(); return; }
   if(id === '__quiz'){ renderQuiz(); return; }
+  if(id === '__demos'){ renderDemos(); return; }
   const item = CONTENT.find(i => i.id === id);
   if(item) renderDoc(item);
 }
