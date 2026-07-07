@@ -92,7 +92,58 @@
     animation:tokenIn .35s ease forwards;
   }
   .token-chip:nth-child(odd){ border-color:var(--accent); }
+  .token-chip.token-stop{ opacity:1; color:var(--muted); border-style:dashed; }
+  .token-chip.token-punct{ background:transparent; border-color:transparent; color:var(--muted); padding:6px 4px; }
   @keyframes tokenIn{ to{ opacity:1; transform:none; } }
+  .demo-input-row{ display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .demo-input-row input{
+    flex:1; min-width:200px; padding:9px 12px; border-radius:8px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:13.5px; font-family:inherit;
+  }
+  .demo-meta{ margin-top:14px; font-size:12px; color:var(--muted); display:flex; align-items:center; gap:14px; flex-wrap:wrap;}
+  .demo-meta b{ color:var(--text); }
+  .demo-examples{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+  .example-chip{
+    font-size:11.5px; padding:5px 10px; border-radius:20px; border:1px dashed var(--border); color:var(--muted);
+    cursor:pointer; background:var(--bg);
+  }
+  .example-chip:hover{ border-color:var(--accent); color:var(--accent); border-style:solid; }
+  .legend{ display:flex; gap:10px; font-size:11px; margin-left:auto; }
+  .legend span[class^="dot-"]{ display:inline-block; width:9px; height:9px; border-radius:2px; margin-right:4px; vertical-align:middle;}
+  .dot-stop{ border:1px dashed var(--muted); }
+  .dot-punct{ background:var(--muted); opacity:.4; }
+
+  .doc-demo{
+    margin-top:26px; background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:20px 22px; box-shadow:var(--shadow);
+  }
+  .doc-demo .label{ font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:14px; font-weight:700;}
+  .doc-demo select, .doc-demo input[type="text"]{
+    padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text);
+    font-size:13.5px; font-family:inherit; margin-right:8px; margin-bottom:10px;
+  }
+  .tfidf-docs{ display:grid; gap:10px; margin-bottom:14px; }
+  .tfidf-doc{ padding:10px 14px; border:1px solid var(--border); border-radius:8px; font-size:13.5px; background:var(--bg); }
+  .tfidf-doc .w{ cursor:pointer; padding:1px 3px; border-radius:4px; }
+  .tfidf-doc .w:hover{ background:var(--accent); color:#04231f; }
+  .tfidf-doc .w.selected{ background:var(--accent2); color:#241a02; font-weight:700; }
+  .tfidf-result{ display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+  .tfidf-metric{ background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:10px 16px; min-width:100px; }
+  .tfidf-metric b{ display:block; font-family:'JetBrains Mono',monospace; font-size:16px; color:var(--accent); }
+  .tfidf-metric span{ font-size:11px; color:var(--muted); }
+  .onehot-vec{ display:flex; gap:6px; flex-wrap:wrap; margin-top:12px; }
+  .onehot-box{
+    width:42px; height:42px; display:flex; align-items:center; justify-content:center; border-radius:6px;
+    border:1px solid var(--border); font-family:'JetBrains Mono',monospace; font-size:14px; background:var(--bg);
+  }
+  .onehot-box.hot{ background:var(--accent); color:#04231f; border-color:var(--accent); font-weight:700; }
+  .onehot-labels{ display:flex; gap:6px; flex-wrap:wrap; margin-top:6px; }
+  .onehot-labels span{ width:42px; text-align:center; font-size:10px; color:var(--muted); }
+  .stemlemma-result{ display:flex; gap:14px; flex-wrap:wrap; margin-top:14px; }
+  .stemlemma-card{ flex:1; min-width:160px; background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:14px 16px; }
+  .stemlemma-card .k{ font-size:11px; text-transform:uppercase; color:var(--muted); letter-spacing:.06em; }
+  .stemlemma-card .v{ font-family:'JetBrains Mono',monospace; font-size:20px; margin-top:6px; color:var(--accent); }
+  .demo-hint{ font-size:12px; color:var(--muted); margin-top:10px; }
   .tokenize-btn{
     margin-top:16px; background:var(--accent); color:#04231f; border:none; border-radius:8px;
     padding:9px 16px; font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;
@@ -107,6 +158,7 @@
   .home-card:hover{ transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--accent); }
   .home-card .icon{ font-size:20px; }
   .home-card h3{ font-size:14.5px; margin:8px 0 2px; }
+  .live-badge{ font-size:10px; font-weight:600; color:var(--accent); border:1px solid var(--accent); padding:1px 6px; border-radius:20px; vertical-align:middle; }
   .home-card p{ font-size:12.5px; color:var(--muted); margin:0; }
 
   .doc-header{ margin-bottom: 18px; }
@@ -179,7 +231,7 @@
 </div>
 
 <footer>
-  Built for Natural Language Processing, by Sneha &amp; Mahek ·
+  by Sneha &amp; Mahek ·
   <a href="https://github.com/snehachheda963/nlp-knowledge-repository" target="_blank">View source on GitHub</a>
 </footer>
 
@@ -199,12 +251,16 @@ const CONTENT = [
     blurb:'Speed vs accuracy in reducing words to their root.' },
   { id:'w2v-ft',            title:'Word2Vec vs FastText',          icon:'⚖️', category:'Comparative Analysis', path:'comparative-analysis/word2vec-vs-fasttext.md',
     blurb:'Whole-word vs subword embedding strategies.' },
+  { id:'onehot-vs-embed',   title:'One-Hot Encoding vs Word Embeddings', icon:'⚖️', category:'Comparative Analysis', path:'comparative-analysis/one-hot-vs-embeddings.md',
+    blurb:'Sparse, simple vectors vs dense, meaningful ones.' },
   { id:'prep-pipeline',     title:'Text Preprocessing Pipeline',   icon:'🔄', category:'Workflow Diagrams', path:'workflow-diagrams/preprocessing-pipeline.md', hasMermaid:true,
     blurb:'From raw text to clean, model-ready tokens.' },
   { id:'feat-pipeline',     title:'Feature Engineering Pipeline',  icon:'🔄', category:'Workflow Diagrams', path:'workflow-diagrams/feature-engineering-pipeline.md', hasMermaid:true,
     blurb:'Turning clean tokens into numeric feature vectors.' },
+  { id:'text-to-vector',    title:'Text-to-Vector Transformation', icon:'🔄', category:'Workflow Diagrams', path:'workflow-diagrams/text-to-vector-pipeline.md', hasMermaid:true,
+    blurb:'The big-picture path from raw text to a model-ready number.' },
   { id:'applications',     title:'Real-World Applications',       icon:'🌍', category:'Applications & Insights', path:'application/real-world-applications.md',
-    blurb:'Where these Week 1 concepts show up in the real world.' },
+    blurb:'Where these concepts show up in the real world.' },
   { id:'research',          title:'Research & Industry Insights',  icon:'🔬', category:'Applications & Insights', path:'research-insights/research-and-industry.md',
     blurb:'From BERT to IndicNLP — where the field is heading.' },
   { id:'sustainability',    title:'Sustainability & Societal Impact', icon:'🌱', category:'Applications & Insights', path:'sustainability.md',
@@ -224,6 +280,29 @@ const DEMO_SENTENCES = [
   "Embeddings place similar words closer together in vector space.",
   "FastText handles rare words better than Word2Vec."
 ];
+
+const TFIDF_DOCS = [
+  "The weather was nice yesterday",
+  "The weather is cold today",
+  "I enjoyed a nice walk today"
+];
+
+const STEM_LEMMA_DICT = {
+  "studies":   { stem:"studi",  lemma:"study" },
+  "studying":  { stem:"studi",  lemma:"study" },
+  "better":    { stem:"better", lemma:"good" },
+  "running":   { stem:"run",    lemma:"run" },
+  "ran":       { stem:"ran",    lemma:"run" },
+  "flies":     { stem:"fli",    lemma:"fly" },
+  "geese":     { stem:"gees",   lemma:"goose" },
+  "happily":   { stem:"happili",lemma:"happy" },
+  "cars":      { stem:"car",    lemma:"car" },
+  "banks":     { stem:"bank",   lemma:"bank" },
+  "complained":{ stem:"complain", lemma:"complain" },
+  "rejected":  { stem:"reject", lemma:"reject" }
+};
+
+const ONEHOT_VOCAB = ["bank","loan","approved","rejected","complaint"];
 
 const QUIZ = [
   { q:"What is the main purpose of tokenization in an NLP pipeline?",
@@ -331,21 +410,26 @@ function renderHome(){
   el.innerHTML = `
     <div class="hero">
       <h1>NLP Knowledge Artifact Repository</h1>
-      <p class="subtitle">A structured, hands-on exploration of Week 1 NLP concepts — text preprocessing, feature engineering, and language representation — built for CCE Activity I.</p>
-      <p class="byline">by Sneha &amp; Mahek <span class="tag">CMCOR1PE301.1</span> <span class="tag">SAKEC</span></p>
+      <p class="subtitle">Explore how raw text becomes machine-understandable — with concept cards, comparisons, workflow diagrams, and live demos you can actually play with.</p>
+      <p class="byline">by Sneha &amp; Mahek</p>
 
       <div class="stats">
         <div class="stat"><b>4</b><span>Concept Cards</span></div>
-        <div class="stat"><b>2</b><span>Comparative Analyses</span></div>
-        <div class="stat"><b>2</b><span>Workflow Pipelines</span></div>
+        <div class="stat"><b>3</b><span>Comparative Analyses</span></div>
+        <div class="stat"><b>3</b><span>Workflow Pipelines</span></div>
         <div class="stat"><b>3</b><span>Applications &amp; Insights</span></div>
         <div class="stat"><b>6</b><span>Quiz Questions</span></div>
       </div>
 
       <div class="tokenizer-box">
-        <div class="label">Live demo — see tokenization in action</div>
+        <div class="label">Live demo — type anything and watch it get tokenized</div>
+        <div class="demo-input-row">
+          <input id="tokenInput" type="text" value="RBI mandates banks to resolve complaints within 30 days." placeholder="Type a sentence...">
+          <button class="tokenize-btn" id="tokenizeBtn">Tokenize →</button>
+        </div>
+        <div class="demo-examples" id="tokenExamples"></div>
         <div class="hero-tokens" id="heroTokens"></div>
-        <button class="tokenize-btn" id="tokenizeBtn">Tokenize another sentence →</button>
+        <div class="demo-meta" id="tokenMeta"></div>
       </div>
     </div>
 
@@ -353,7 +437,7 @@ function renderHome(){
       ${CONTENT.map(item => `
         <div class="home-card" data-id="${item.id}">
           <div class="icon">${item.icon}</div>
-          <h3>${item.title}</h3>
+          <h3>${item.title}${['tfidf','stem-lemma','onehot'].includes(item.id) ? ' <span class="live-badge">🎮 Try it live</span>' : ''}</h3>
           <p>${item.blurb || ''}</p>
         </div>`).join('')}
     </div>
@@ -361,18 +445,142 @@ function renderHome(){
   document.querySelectorAll('.home-card').forEach(c => {
     c.addEventListener('click', () => navigate(c.dataset.id));
   });
-  let demoIdx = 0;
-  renderTokens(DEMO_SENTENCES[demoIdx]);
-  document.getElementById('tokenizeBtn').addEventListener('click', () => {
-    demoIdx = (demoIdx + 1) % DEMO_SENTENCES.length;
-    renderTokens(DEMO_SENTENCES[demoIdx]);
+  const input = document.getElementById('tokenInput');
+  const runTokenize = () => renderTokens(input.value || DEMO_SENTENCES[0]);
+  runTokenize();
+  document.getElementById('tokenizeBtn').addEventListener('click', runTokenize);
+  input.addEventListener('keydown', e => { if(e.key === 'Enter') runTokenize(); });
+  let debounceTimer;
+  input.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(runTokenize, 300);
+  });
+  const examplesWrap = document.getElementById('tokenExamples');
+  examplesWrap.innerHTML = DEMO_SENTENCES.map(s => `<span class="example-chip">${s.length > 42 ? s.slice(0,42)+'…' : s}</span>`).join('');
+  examplesWrap.querySelectorAll('.example-chip').forEach((chip, i) => {
+    chip.addEventListener('click', () => { input.value = DEMO_SENTENCES[i]; runTokenize(); });
   });
 }
 
+const STOPWORDS = new Set(['the','is','a','an','to','of','and','or','in','on','within','was','were','are','i','it','this','that','for']);
+
 function renderTokens(sentence){
   const wrap = document.getElementById('heroTokens');
+  const meta = document.getElementById('tokenMeta');
   const tokens = sentence.match(/[\w₹]+|[.,!?]/g) || [];
-  wrap.innerHTML = tokens.map((t,i) => `<span class="token-chip" style="animation-delay:${i*45}ms">${t}</span>`).join('');
+  wrap.innerHTML = tokens.map((t,i) => {
+    const isPunct = /^[.,!?]$/.test(t);
+    const isStop = STOPWORDS.has(t.toLowerCase());
+    const cls = isPunct ? 'token-chip token-punct' : isStop ? 'token-chip token-stop' : 'token-chip';
+    return `<span class="${cls}" style="animation-delay:${i*45}ms">${t}</span>`;
+  }).join('');
+  if(meta){
+    const words = tokens.filter(t => !/^[.,!?]$/.test(t));
+    const stopCount = words.filter(t => STOPWORDS.has(t.toLowerCase())).length;
+    meta.innerHTML = `<b>${tokens.length}</b> tokens · <b>${words.length}</b> words · <b>${stopCount}</b> stop-words <span class="legend"><span class="dot-stop"></span>stop-word <span class="dot-punct"></span>punctuation</span>`;
+  }
+}
+
+function computeTFIDF(docs, word){
+  word = word.toLowerCase();
+  const tokenize = d => d.toLowerCase().match(/[a-z₹]+/g) || [];
+  const results = docs.map((doc, i) => {
+    const words = tokenize(doc);
+    const tf = words.filter(w => w === word).length / words.length;
+    const docsWithWord = docs.filter(d => tokenize(d).includes(word)).length;
+    const idf = docsWithWord ? Math.log(docs.length / docsWithWord) : 0;
+    return { doc: i, tf, idf, tfidf: tf * idf };
+  });
+  return results;
+}
+
+function renderTfidfDemo(container){
+  const box = document.createElement('div');
+  box.className = 'doc-demo';
+  box.innerHTML = `
+    <div class="label">Live demo — click any word below to compute its real TF-IDF score</div>
+    <div class="tfidf-docs">
+      ${TFIDF_DOCS.map((doc, di) => `
+        <div class="tfidf-doc" data-di="${di}">
+          Doc ${di+1}: ${doc.split(' ').map(w => `<span class="w" data-word="${w.replace(/[^a-zA-Z]/g,'')}">${w}</span>`).join(' ')}
+        </div>
+      `).join('')}
+    </div>
+    <div id="tfidfOut" class="demo-hint">Click a word above to see its TF, IDF, and TF-IDF score computed live across all 3 documents.</div>
+  `;
+  container.appendChild(box);
+  box.querySelectorAll('.w').forEach(w => {
+    w.addEventListener('click', () => {
+      box.querySelectorAll('.w').forEach(x => x.classList.remove('selected'));
+      const word = w.dataset.word;
+      box.querySelectorAll(`.w[data-word="${word}"]`).forEach(x => x.classList.add('selected'));
+      const results = computeTFIDF(TFIDF_DOCS, word);
+      const out = box.querySelector('#tfidfOut');
+      out.innerHTML = `<strong>"${word}"</strong><div class="tfidf-result">` +
+        results.map(r => `
+          <div class="tfidf-metric"><b>${r.tf.toFixed(2)}</b><span>TF (Doc ${r.doc+1})</span></div>
+        `).join('') +
+        `<div class="tfidf-metric"><b>${results[0].idf.toFixed(2)}</b><span>IDF (same for all docs)</span></div>` +
+        results.map(r => `
+          <div class="tfidf-metric"><b>${r.tfidf.toFixed(3)}</b><span>TF-IDF (Doc ${r.doc+1})</span></div>
+        `).join('') +
+        `</div>`;
+    });
+  });
+}
+
+function renderStemLemmaDemo(container){
+  const box = document.createElement('div');
+  box.className = 'doc-demo';
+  const words = Object.keys(STEM_LEMMA_DICT);
+  box.innerHTML = `
+    <div class="label">Live demo — see stemming vs lemmatization side by side</div>
+    <select id="stemWordSelect">
+      ${words.map(w => `<option value="${w}">${w}</option>`).join('')}
+    </select>
+    <div id="stemOut" class="stemlemma-result"></div>
+  `;
+  container.appendChild(box);
+  const update = () => {
+    const w = box.querySelector('#stemWordSelect').value;
+    const r = STEM_LEMMA_DICT[w];
+    box.querySelector('#stemOut').innerHTML = `
+      <div class="stemlemma-card"><div class="k">Original</div><div class="v">${w}</div></div>
+      <div class="stemlemma-card"><div class="k">Stemming</div><div class="v">${r.stem}</div></div>
+      <div class="stemlemma-card"><div class="k">Lemmatization</div><div class="v">${r.lemma}</div></div>
+    `;
+  };
+  box.querySelector('#stemWordSelect').addEventListener('change', update);
+  update();
+}
+
+function renderOneHotDemo(container){
+  const box = document.createElement('div');
+  box.className = 'doc-demo';
+  box.innerHTML = `
+    <div class="label">Live demo — pick a word and see its one-hot vector</div>
+    <select id="onehotSelect">
+      ${ONEHOT_VOCAB.map(w => `<option value="${w}">${w}</option>`).join('')}
+    </select>
+    <div class="onehot-vec" id="onehotVec"></div>
+    <div class="onehot-labels">${ONEHOT_VOCAB.map(w => `<span>${w}</span>`).join('')}</div>
+  `;
+  container.appendChild(box);
+  const update = () => {
+    const w = box.querySelector('#onehotSelect').value;
+    const idx = ONEHOT_VOCAB.indexOf(w);
+    box.querySelector('#onehotVec').innerHTML = ONEHOT_VOCAB.map((_, i) =>
+      `<div class="onehot-box ${i === idx ? 'hot' : ''}">${i === idx ? 1 : 0}</div>`
+    ).join('');
+  };
+  box.querySelector('#onehotSelect').addEventListener('change', update);
+  update();
+}
+
+function renderDemoFor(item, container){
+  if(item.id === 'tfidf') renderTfidfDemo(container);
+  else if(item.id === 'stem-lemma') renderStemLemmaDemo(container);
+  else if(item.id === 'onehot') renderOneHotDemo(container);
 }
 
 async function fetchDoc(item){
@@ -411,6 +619,7 @@ async function renderDoc(item){
       mermaid.initialize({ startOnLoad:false, theme: currentTheme === 'dark' ? 'dark' : 'default' });
       await mermaid.run({ querySelector: '.mermaid' });
     }
+    renderDemoFor(item, el);
   }catch(err){
     el.querySelector('.markdown-body').innerHTML = `<p style="color:var(--accent3)">Couldn't load this file (${item.path}). Make sure it exists at that path relative to index.html.</p>`;
   }
