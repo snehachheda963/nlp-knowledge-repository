@@ -1,6 +1,6 @@
 # NLP Knowledge Artifact Repository
 
-A structured repository covering NLP concepts — text preprocessing, feature engineering, and language representation.
+A structured repository covering NLP concepts through the lens of Indian banking and financial grievance text — text preprocessing, feature engineering, and language representation.
 
 ## 📘 Concept Cards
 - [Tokenization](concept-cards/tokenization.md)
@@ -32,5 +32,3 @@ A structured repository covering NLP concepts — text preprocessing, feature en
 ## 👥 Contribution Matrix
 - [See who contributed what](contribution-matrix.md)
 
----
-*Built for CMCOR1PE301.1 – Natural Language Processing, Semester V, SAKEC.*
