@@ -2,30 +2,30 @@
 
 **Contributors:** Sneha & Mahek
 
-## 1. Search Engines
+## 1. Complaint Search & Retrieval Systems
 **Relevant concepts:** Tokenization, Stop-word Removal, TF-IDF
-**Why needed:** Search engines must break down billions of web pages and user queries into comparable units, then determine which words in a document are most meaningful (ignoring common words like "the" or "is").
-**Expected benefit:** Faster, more relevant search results by ranking documents based on meaningful keyword overlap with the query rather than raw word count.
+**Why needed:** Bank support staff need to search years of archived customer complaints to find similar past cases, but must break down thousands of complaint records and staff queries into comparable units, then determine which words in a complaint are most meaningful (ignoring common words like "the" or "is").
+**Expected benefit:** Faster, more relevant retrieval of similar past grievances by ranking complaint records based on meaningful keyword overlap with the query rather than raw word count.
 
-## 2. Chatbots
+## 2. Banking Grievance Chatbots
 **Relevant concepts:** Tokenization, Lemmatization, Word Embeddings
-**Why needed:** A chatbot must understand user input despite variations in phrasing, tense, or word form ("I am booking" vs "I booked" vs "I will book").
-**Expected benefit:** More natural, flexible conversations where the bot correctly understands intent regardless of exact wording used.
+**Why needed:** A grievance-intake chatbot must understand a customer's complaint despite variations in phrasing, tense, or word form ("my loan was rejected" vs "they rejected my loan" vs "loan rejection happened").
+**Expected benefit:** More natural, flexible complaint intake where the bot correctly understands intent regardless of exact wording used, reducing the need for a human agent to re-clarify.
 
-## 3. Sentiment Analysis
+## 3. Complaint Sentiment & Urgency Analysis
 **Relevant concepts:** Tokenization, Stop-word Removal, TF-IDF, Word Embeddings
-**Why needed:** To classify text as positive, negative, or neutral, a model must first isolate the meaningful, emotion-carrying words in a sentence and represent them numerically.
-**Expected benefit:** Businesses can automatically gauge public opinion from reviews, social media, or feedback at scale, without manually reading every entry.
+**Why needed:** To flag which complaints are most urgent or severe (e.g., fraud vs. a minor service delay), a model must first isolate the meaningful, emotion-carrying words in a complaint and represent them numerically.
+**Expected benefit:** Banks can automatically prioritize high-severity complaints (like unauthorized transactions) for faster resolution, instead of manually triaging every complaint in the order it arrives.
 
-## 4. Machine Translation
+## 4. Bilingual Grievance Translation
 **Relevant concepts:** Tokenization, Language Representation (Word Embeddings), Neural Language Models
-**Why needed:** Translating between languages requires understanding word meaning and context, not just direct word-for-word substitution, since grammar and word order differ across languages.
-**Expected benefit:** More fluent, contextually accurate translations, especially for languages with very different sentence structures (e.g., English to Hindi/Marathi).
+**Why needed:** Translating a customer's complaint between English, Hindi, or Marathi requires understanding word meaning and context, not just direct word-for-word substitution, since grammar and word order differ across languages.
+**Expected benefit:** More fluent, contextually accurate translation of grievances, ensuring a complaint filed in Hindi or Marathi is fully understood by an English-speaking resolution team and vice versa — directly supporting RBI's trilingual banking mandate.
 
-## 5. Text Summarization
+## 5. Complaint Summarization
 **Relevant concepts:** TF-IDF, Sentence Segmentation, Contextual Embeddings
-**Why needed:** To identify which sentences or phrases in a long document carry the most important information, so they can be extracted or rephrased into a shorter summary.
-**Expected benefit:** Saves time for readers by condensing long articles, reports, or documents into their key points without losing essential meaning.
+**Why needed:** To identify which sentences or phrases in a long, rambling customer complaint carry the most important information, so a resolution officer can extract the core issue without reading the full text.
+**Expected benefit:** Saves time for bank staff by condensing long complaint threads or emails into their key points (what happened, what the customer wants) without losing essential meaning.
 
 ## 6. Banking Grievance Classification
 **Relevant concepts:** Tokenization, TF-IDF, Word Embeddings
