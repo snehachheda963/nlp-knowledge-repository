@@ -39,3 +39,4 @@ The word **"nice"** appears in documents 1 and 3, not 2 — giving it a moderate
 - Keyword extraction from articles or documents
 - Document classification and clustering
 - Recommendation systems based on text similarity
+- Identifying the most distinctive keywords in a batch of customer grievance complaints (e.g., surfacing "unauthorized transaction" or "delayed refund" as high-signal terms)
