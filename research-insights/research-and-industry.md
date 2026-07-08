@@ -12,8 +12,8 @@ A significant area of ongoing research focuses on extending NLP capabilities to 
 
 ## Industrial Applications
 
-### 1. Google Search and Google Translate
-Google has integrated transformer-based language understanding (originating from its BERT research) directly into Search to better interpret the intent behind natural language queries, rather than relying purely on keyword matching. A similar shift has occurred in Google Translate, which moved from older statistical translation methods to neural, transformer-based translation for significantly more fluent and context-aware results.
+### 1. IndicBERT/MuRIL Adoption in Vernacular Digital Banking
+Several Indian banks and fintech platforms have begun piloting transformer-based multilingual models like IndicBERT and MuRIL to power vernacular digital banking — letting customers file complaints, check balances, or ask questions in Hindi, Marathi, or other regional languages instead of English. This directly supports the RBI's broader push for trilingual banking communication, since these models can interpret the intent behind a query rather than relying on rigid keyword matching, and can be fine-tuned specifically on grievance and complaint text rather than general-purpose web text.
 
 ### 2. Customer Support Chatbots in Banking and E-commerce
 Many Indian banks and e-commerce platforms now deploy NLP-powered chatbots to handle customer queries, complaints, and transactions in multiple languages. These systems rely on the exact Week 1 pipeline covered in this repository: tokenization and normalization of user input, followed by feature representation, to correctly interpret intent regardless of how a customer phrases their request.
