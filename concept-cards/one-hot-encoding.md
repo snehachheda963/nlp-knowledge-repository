@@ -29,10 +29,10 @@ Vocabulary: `["bank", "loan", "approved", "rejected"]`
 
 ## 6. Limitations
 - Produces very large, sparse vectors as vocabulary size grows (a vocabulary of 50,000 words means every vector has 50,000 dimensions, mostly zeros).
-- Cannot capture any similarity or relationship between words — "happy" and "joyful" are just as unrelated as "happy" and "car" in this representation.
+- Cannot capture any similarity or relationship between words — "rejected" and "denied" are just as unrelated as "rejected" and "weather" in this representation, even though the first pair means the same thing in a complaint.
 - Computationally inefficient and memory-intensive for large text datasets compared to dense embeddings.
 
 ## 7. Applications
-- Basic text classification tasks with small, fixed vocabularies.
+- Basic text classification tasks with small, fixed vocabularies (e.g., tagging a complaint as "approved" or "rejected" status).
 - Categorical feature encoding in traditional machine learning pipelines (not limited to text).
-- Often used as a stepping stone/teaching example before introducing word embeddings.
+- Often used as a stepping stone/teaching example before introducing word embeddings for grievance text.
