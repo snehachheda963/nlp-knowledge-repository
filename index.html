@@ -275,60 +275,60 @@ const CONTENT = [
 
 const DEMO_SENTENCES = [
   "RBI mandates banks to resolve complaints within 30 days.",
-  "Tokenization breaks raw text into meaningful units.",
-  "TF-IDF highlights the words that matter most in a document.",
-  "Embeddings place similar words closer together in vector space.",
-  "FastText handles rare words better than Word2Vec."
+  "Tokenization breaks a customer's grievance text into meaningful units.",
+  "TF-IDF highlights the most distinctive words in a batch of financial complaints.",
+  "Embeddings place grievance phrases like 'loan rejected' and 'loan denied' closer together.",
+  "FastText handles rare banking terms and misspellings better than Word2Vec."
 ];
 
 const TFIDF_DOCS = [
-  "The weather was nice yesterday",
-  "The weather is cold today",
-  "I enjoyed a nice walk today"
+  "The refund was delayed yesterday",
+  "The account is frozen today",
+  "The customer complained about a delayed refund today"
 ];
 
 const STEM_LEMMA_DICT = {
-  "studies":   { stem:"studi",  lemma:"study" },
-  "studying":  { stem:"studi",  lemma:"study" },
-  "better":    { stem:"better", lemma:"good" },
-  "running":   { stem:"run",    lemma:"run" },
-  "ran":       { stem:"ran",    lemma:"run" },
-  "flies":     { stem:"fli",    lemma:"fly" },
-  "geese":     { stem:"gees",   lemma:"goose" },
-  "happily":   { stem:"happili",lemma:"happy" },
-  "cars":      { stem:"car",    lemma:"car" },
-  "banks":     { stem:"bank",   lemma:"bank" },
-  "complained":{ stem:"complain", lemma:"complain" },
-  "rejected":  { stem:"reject", lemma:"reject" }
+  "complaints":  { stem:"complaint", lemma:"complaint" },
+  "complained":  { stem:"complain",  lemma:"complain" },
+  "filed":       { stem:"file",      lemma:"file" },
+  "filing":      { stem:"file",      lemma:"file" },
+  "disputed":    { stem:"disput",    lemma:"dispute" },
+  "policies":    { stem:"polici",    lemma:"policy" },
+  "transactions":{ stem:"transact",  lemma:"transaction" },
+  "rejected":    { stem:"reject",    lemma:"reject" },
+  "banks":       { stem:"bank",      lemma:"bank" },
+  "paid":        { stem:"paid",      lemma:"pay" },
+  "better":      { stem:"better",    lemma:"good" },
+  "processing":  { stem:"process",   lemma:"process" }
 };
 
 const ONEHOT_VOCAB = ["bank","loan","approved","rejected","complaint"];
 
 const QUIZ = [
-  { q:"What is the main purpose of tokenization in an NLP pipeline?",
-    options:["Translate text into another language","Split raw text into smaller, processable units","Remove all punctuation permanently","Train a neural network"],
+  { q:"What is the main purpose of tokenization when processing a customer's grievance text?",
+    options:["Translate the complaint into another language","Split the raw complaint text into smaller, processable units","Remove all punctuation permanently","Train a neural network"],
     correct:1,
-    explain:"Tokenization is the entry point of almost every NLP pipeline — you can't analyze or vectorize text until it's split into tokens." },
-  { q:"A word with a high TF-IDF score in a document most likely means:",
-    options:["It's a common stop word like 'the'","It appears frequently in that document but rarely elsewhere","It appears in every document in the corpus","It has no numeric representation"],
+    explain:"Tokenization is the entry point of almost every NLP pipeline — a grievance complaint can't be analyzed or vectorized until it's split into tokens." },
+  { q:"In a corpus of customer complaints, a word with a high TF-IDF score in one complaint most likely means:",
+    options:["It's a common stop word like 'the'","It appears frequently in that complaint but rarely in others","It appears in every complaint in the corpus","It has no numeric representation"],
     correct:1,
-    explain:"High TF-IDF = frequent locally, rare globally — which is exactly what makes a word a strong keyword for that specific document." },
-  { q:"Why can't one-hot encoding capture that 'happy' and 'joyful' are related?",
+    explain:"High TF-IDF = frequent locally, rare globally — exactly what makes a word like 'unauthorized' a strong keyword for that specific complaint." },
+  { q:"Why can't one-hot encoding capture that 'approved' and 'sanctioned' mean roughly the same thing in a loan-status complaint?",
     options:["It only works on numbers, not words","Every word's vector is equally distant from every other word's vector","It requires a neural network to run","It only encodes the first letter of each word"],
     correct:1,
-    explain:"One-hot vectors have no notion of similarity — 'happy' and 'joyful' are just as unrelated as 'happy' and 'car' in this representation." },
-  { q:"For morphologically rich languages like Hindi or Marathi, why is lemmatization generally safer than stemming?",
+    explain:"One-hot vectors have no notion of similarity — 'approved' and 'sanctioned' are just as unrelated as 'approved' and 'transaction' in this representation." },
+  { q:"For a bilingual banking grievance system handling Hindi or Marathi complaints, why is lemmatization generally safer than stemming?",
     options:["Lemmatization is always faster to compute","Stemming can't run on non-English text at all","Naive suffix-stripping rules distort many word forms in richly inflected languages","Lemmatization doesn't require a dictionary"],
     correct:2,
-    explain:"Stemming's simple rules break down when a language has many inflections per root, while lemmatization's dictionary-based approach handles this more reliably." },
-  { q:"What problem does FastText solve that plain Word2Vec doesn't?",
-    options:["It trains faster on small vocabularies","It can construct reasonable vectors for unseen (OOV) words using subword n-grams","It removes the need for any training data","It works only on numeric data"],
+    explain:"Stemming's simple rules break down when a language has many inflections per root, while lemmatization's dictionary-based approach handles this more reliably — important for RBI-mandated multilingual complaint handling." },
+  { q:"What problem does FastText solve that plain Word2Vec doesn't, when processing messy customer complaint text?",
+    options:["It trains faster on small vocabularies","It can construct reasonable vectors for unseen or misspelled words using subword n-grams","It removes the need for any training data","It works only on numeric data"],
     correct:1,
-    explain:"Word2Vec has no vector for a word it never saw during training. FastText builds vectors from character n-grams, so it can approximate unseen or rare words." },
+    explain:"Word2Vec has no vector for a word it never saw during training. FastText builds vectors from character n-grams, so it can approximate unseen, rare, or misspelled banking terms." },
   { q:"In the text preprocessing pipeline, why must case normalization happen before stop-word removal?",
     options:["It doesn't matter what order they happen in","Stop-word lists are usually lowercase, so \"The\" won't match unless the text is normalized first","Stop-word removal must always happen first","Case normalization requires stop words to be removed first"],
     correct:1,
-    explain:"If \"The\" isn't lowercased first, a lowercase stop-word list won't recognize it as a stop word, and it'll slip through uncleaned." }
+    explain:"If \"The\" isn't lowercased first, a lowercase stop-word list won't recognize it as a stop word — the same reason \"Bank\" and \"bank\" must be normalized before they can be treated as the same token." }
 ];
 
 let currentTheme = localStorage.getItem('theme') || 'dark';
