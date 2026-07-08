@@ -33,3 +33,4 @@ In a well-trained embedding space:
 - Recommendation systems (finding similar items/content based on text descriptions)
 - Search engines (matching queries to documents based on meaning, not just exact keywords)
 - Machine translation (mapping words with similar meaning across languages)
+- Recognizing that grievance phrases like "loan rejected" and "loan denied" mean the same thing, even when customers phrase complaints differently
