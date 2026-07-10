@@ -1,4 +1,4 @@
-# NLP Knowledge Artifact Repository
+# Natural Language Processing Knowledge Artifact Repository
 
 A structured repository covering NLP concepts through the lens of Indian banking and financial grievance text — text preprocessing, feature engineering, and language representation.
 
